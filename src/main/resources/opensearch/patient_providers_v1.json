@@ -1,0 +1,14 @@
+{
+  "settings": {"number_of_shards": 1, "number_of_replicas": 0},
+  "mappings": {
+    "dynamic": "false",
+    "properties": {
+      "id": {"type": "keyword"},
+      "patientId": {"type": "keyword"},
+      "providerId": {"type": "keyword"},
+      "createdAt": {"type": "date", "format": "strict_date_optional_time||epoch_millis"},
+      "updatedAt": {"type": "date", "format": "strict_date_optional_time||epoch_millis"}
+    }
+  }
+}
+

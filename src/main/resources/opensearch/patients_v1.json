@@ -1,0 +1,115 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "filter": {
+        "edge_ngram_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "normalizer": {
+        "lowercase_normalizer": {
+          "type": "custom",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      },
+      "analyzer": {
+        "folded": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding"]
+        },
+        "autocomplete": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding", "edge_ngram_filter"]
+        },
+        "autocomplete_search": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "false",
+    "properties": {
+      "id": {"type": "keyword"},
+      "firstName": {
+        "type": "text",
+        "analyzer": "folded",
+        "search_analyzer": "folded",
+        "fields": {
+          "keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"},
+          "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}
+        }
+      },
+      "lastName": {
+        "type": "text",
+        "analyzer": "folded",
+        "search_analyzer": "folded",
+        "fields": {
+          "keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"},
+          "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}
+        }
+      },
+      "fullName": {
+        "type": "text",
+        "analyzer": "folded",
+        "search_analyzer": "folded",
+        "fields": {
+          "keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"},
+          "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}
+        }
+      },
+      "gender": {"type": "keyword", "normalizer": "lowercase_normalizer"},
+      "dob": {"type": "date", "format": "strict_date||strict_date_optional_time||epoch_millis"},
+      "email": {
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer"
+      },
+      "phone": {"type": "keyword"},
+      "isActive": {"type": "boolean"},
+      "address": {
+        "type": "object",
+        "properties": {
+          "street": {"type": "text", "analyzer": "folded", "fields": {"keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"}, "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}}},
+          "city":   {"type": "text", "analyzer": "folded", "fields": {"keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"}, "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}}},
+          "state":  {"type": "text", "analyzer": "folded", "fields": {"keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"}}},
+          "zip":    {"type": "keyword"}
+        }
+      },
+      "organization": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "keyword"},
+          "name": {"type": "text", "analyzer": "folded", "fields": {"keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"}, "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}}}
+        }
+      },
+      "providers": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "keyword"},
+          "name": {"type": "text", "analyzer": "folded", "fields": {"keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"}, "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}}}
+        }
+      },
+      "portals": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "keyword"},
+          "name": {"type": "text", "analyzer": "folded", "fields": {"keyword": {"type": "keyword", "normalizer": "lowercase_normalizer"}, "autocomplete": {"type": "text", "analyzer": "autocomplete", "search_analyzer": "autocomplete_search"}}},
+          "url": {"type": "keyword"}
+        }
+      },
+      "tags": {"type": "keyword"},
+      "createdAt": {"type": "date", "format": "strict_date_optional_time||epoch_millis"},
+      "updatedAt": {"type": "date", "format": "strict_date_optional_time||epoch_millis"},
+      "suggest": {"type": "completion"},
+      "all": {"type": "text", "analyzer": "folded"}
+    }
+  }
+}
